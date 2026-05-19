@@ -27,6 +27,8 @@ public partial class App : Application
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<ICpuService, CpuService>();
+
+        services.AddSingleton<CpuViewModel>();
         services.AddSingleton<ShellViewModel>();
     }
 }

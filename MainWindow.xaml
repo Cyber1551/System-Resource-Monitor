@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:System_Resource_Monitor"
+        xmlns:views="clr-namespace:System_Resource_Monitor.Views"
         mc:Ignorable="d"
         Title="System Resource Monitor"
         Height="720" Width="1180"
@@ -11,10 +12,7 @@
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display"
         UseLayoutRounding="True">
-    <Grid>
-        <TextBlock Text="{Binding StatusText}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="18"/>
+    <Grid Margin="8">
+        <views:CpuView DataContext="{Binding Cpu}"/>
     </Grid>
 </Window>

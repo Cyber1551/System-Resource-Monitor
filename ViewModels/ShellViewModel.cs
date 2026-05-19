@@ -9,22 +9,15 @@ public sealed partial class ShellViewModel : ObservableObject
     private readonly ICpuService _cpu;
     private readonly DispatcherTimer _timer;
 
-    [ObservableProperty]
-    private string _statusText = "Sampling...";
+    public CpuViewModel Cpu { get; }
 
-    public ShellViewModel(ICpuService cpu)
+    public ShellViewModel(ICpuService cpu, CpuViewModel cpuVm)
     {
         _cpu = cpu;
+        Cpu = cpuVm;
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        _timer.Tick += (_, _) => UpdateStatus();
+        _timer.Tick += (_, _) => Cpu.ApplySample(_cpu.Sample());
         _timer.Start();
-    }
-
-    private void UpdateStatus()
-    {
-        var sample = _cpu.Sample();
-        var cores = string.Join(", ", sample.PerCorePercent.Select(p => $"{p:F0}%"));
-        StatusText = $"CPU total: {sample.TotalPercent:F1}%\nCores: {cores}";
     }
 }
