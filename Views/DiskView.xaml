@@ -1,0 +1,33 @@
+<UserControl x:Class="System_Resource_Monitor.Views.DiskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:System_Resource_Monitor.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=vm:DiskViewModel}">
+    <Border Style="{StaticResource Card}">
+        <StackPanel>
+            <TextBlock Style="{StaticResource HeadingText}" Text="Disk"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock Style="{StaticResource MutedText}" Text="Read"/>
+                    <TextBlock FontSize="20" FontWeight="SemiBold"
+                               Text="{Binding ReadMBs, StringFormat={}{0:F2} MB/s}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Style="{StaticResource MutedText}" Text="Write"/>
+                    <TextBlock FontSize="20" FontWeight="SemiBold"
+                               Text="{Binding WriteMBs, StringFormat={}{0:F2} MB/s}"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </Border>
+</UserControl>

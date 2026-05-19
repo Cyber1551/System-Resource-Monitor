@@ -18,8 +18,10 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <views:CpuView DataContext="{Binding Cpu}"/>
         <views:MemoryView DataContext="{Binding Memory}" Grid.Column="1"/>
+        <views:DiskView DataContext="{Binding Disk}" Grid.Column="2"/>
     </Grid>
 </Window>

@@ -28,9 +28,11 @@ public partial class App : Application
     {
         services.AddSingleton<ICpuService, CpuService>();
         services.AddSingleton<IMemoryService, MemoryService>();
+        services.AddSingleton<IDiskService, DiskService>();
 
         services.AddSingleton<CpuViewModel>();
         services.AddSingleton<MemoryViewModel>();
+        services.AddSingleton<DiskViewModel>();
         services.AddSingleton<ShellViewModel>();
     }
 }
