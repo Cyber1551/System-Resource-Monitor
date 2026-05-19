@@ -5,14 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:System_Resource_Monitor"
         xmlns:views="clr-namespace:System_Resource_Monitor.Views"
+        xmlns:vm="clr-namespace:System_Resource_Monitor.ViewModels"
         mc:Ignorable="d"
         Title="System Resource Monitor"
         Height="720" Width="1180"
         Background="{StaticResource BgBrush}"
         WindowStartupLocation="CenterScreen"
         TextOptions.TextFormattingMode="Display"
-        UseLayoutRounding="True">
+        UseLayoutRounding="True"
+        d:DataContext="{d:DesignInstance Type=vm:ShellViewModel}">
     <Grid Margin="8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
         <views:CpuView DataContext="{Binding Cpu}"/>
+        <views:MemoryView DataContext="{Binding Memory}" Grid.Column="1"/>
     </Grid>
 </Window>
