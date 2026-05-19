@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:System_Resource_Monitor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="System Resource Monitor"
+        Height="720" Width="1180"
+        Background="{StaticResource BgBrush}"
+        WindowStartupLocation="CenterScreen"
+        TextOptions.TextFormattingMode="Display"
+        UseLayoutRounding="True">
     <Grid>
-
+        <TextBlock Text="{Binding StatusText}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="18"/>
     </Grid>
 </Window>
