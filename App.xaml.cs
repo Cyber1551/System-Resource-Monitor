@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using System_Resource_Monitor.Services;
 using System_Resource_Monitor.ViewModels;
@@ -29,10 +29,13 @@ public partial class App : Application
         services.AddSingleton<ICpuService, CpuService>();
         services.AddSingleton<IMemoryService, MemoryService>();
         services.AddSingleton<IDiskService, DiskService>();
+        services.AddSingleton<IProcessService, ProcessService>();
 
         services.AddSingleton<CpuViewModel>();
         services.AddSingleton<MemoryViewModel>();
         services.AddSingleton<DiskViewModel>();
+        services.AddSingleton<HistoryChartViewModel>();
+        services.AddSingleton<ProcessListViewModel>();
         services.AddSingleton<ShellViewModel>();
     }
 }

@@ -14,6 +14,11 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public CpuViewModel Cpu { get; }
     public MemoryViewModel Memory { get; }
     public DiskViewModel Disk { get; }
+    public HistoryChartViewModel History { get; }
+    public ProcessListViewModel Processes { get; }
+
+    [ObservableProperty]
+    private string _statusText = "Sampling...";
 
     public ShellViewModel(
         ICpuService cpu,
@@ -21,7 +26,9 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         IDiskService disk,
         CpuViewModel cpuVm,
         MemoryViewModel memoryVm,
-        DiskViewModel diskVm)
+        DiskViewModel diskVm,
+        HistoryChartViewModel historyVm,
+        ProcessListViewModel processesVm)
     {
         _cpu = cpu;
         _memory = memory;
@@ -30,6 +37,8 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
         Cpu = cpuVm;
         Memory = memoryVm;
         Disk = diskVm;
+        History = historyVm;
+        Processes = processesVm;
 
         // This loop will own its own lifecycle via the cancellation token.
         // ShellViewModel is created on the UI thread
@@ -39,6 +48,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     private async Task RunAsync(CancellationToken ct)
     {
         var timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        var tick = 0;
         try
         {
             while (await timer.WaitForNextTickAsync(ct))
@@ -50,6 +60,17 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
                 Cpu.ApplySample(cpuSample);
                 Memory.ApplySample(memSample);
                 Disk.ApplySample(diskSample);
+                History.Push(cpuSample.TotalPercent, memSample.UsedPercent);
+
+                // Process enumeration is the most expensive sampling step, so refresh it every other tick (~2 seconds) instead of every tick.
+                // Sampling runs on the thread pool; the snapshot is then applied on the UI thread because ApplySnapshot mutates the bound ObservableCollection.
+                if (tick++ % 2 == 0)
+                {
+                    var snapshot = await Task.Run(Processes.Sample, ct);
+                    Processes.ApplySnapshot(snapshot);
+                }
+
+                StatusText = $"Last update: {DateTime.Now:HH:mm:ss}";
             }
         }
         catch (OperationCanceledException)

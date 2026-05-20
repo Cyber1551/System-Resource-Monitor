@@ -15,13 +15,39 @@
         UseLayoutRounding="True"
         d:DataContext="{d:DesignInstance Type=vm:ShellViewModel}">
     <Grid Margin="8">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <views:CpuView DataContext="{Binding Cpu}"/>
-        <views:MemoryView DataContext="{Binding Memory}" Grid.Column="1"/>
-        <views:DiskView DataContext="{Binding Disk}" Grid.Column="2"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <views:CpuView DataContext="{Binding Cpu}"/>
+            <views:MemoryView DataContext="{Binding Memory}" Grid.Column="1"/>
+            <views:DiskView DataContext="{Binding Disk}" Grid.Column="2"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <views:HistoryChartView DataContext="{Binding History}"/>
+            <views:ProcessListView DataContext="{Binding Processes}" Grid.Column="1"/>
+        </Grid>
+
+        <Border Grid.Row="2"
+                Background="{StaticResource SurfaceBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
+                BorderThickness="0,1,0,0"
+                Padding="12,6"
+                Margin="6,6,6,0">
+            <TextBlock Style="{StaticResource MutedText}" Text="{Binding StatusText}"/>
+        </Border>
     </Grid>
 </Window>
