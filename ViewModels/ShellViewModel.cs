@@ -10,6 +10,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     private readonly IDiskService _disk;
 
     private readonly CancellationTokenSource _cts = new();
+    private readonly DateTime _started = DateTime.UtcNow;
 
     public CpuViewModel Cpu { get; }
     public MemoryViewModel Memory { get; }
@@ -18,7 +19,7 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
     public ProcessListViewModel Processes { get; }
 
     [ObservableProperty]
-    private string _statusText = "Sampling...";
+    private string _statusText = "SAMPLING...";
 
     public ShellViewModel(
         ICpuService cpu,
@@ -70,7 +71,10 @@ public sealed partial class ShellViewModel : ObservableObject, IDisposable
                     Processes.ApplySnapshot(snapshot);
                 }
 
-                StatusText = $"Last update: {DateTime.Now:HH:mm:ss}";
+                var uptime = DateTime.UtcNow - _started;
+                StatusText = $"HOST {Environment.MachineName.ToUpperInvariant()}" +
+                             $@"    UPTIME {uptime:hh\:mm\:ss}" +
+                             $"    LAST SAMPLE {DateTime.Now:HH:mm:ss}";
             }
         }
         catch (OperationCanceledException)

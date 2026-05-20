@@ -11,51 +11,66 @@ public sealed partial class HistoryChartViewModel : ObservableObject
 {
     private const int MaxPoints = 60;
 
-    private readonly ObservableCollection<double> _cpuValues = new();
-    private readonly ObservableCollection<double> _ramValues = new();
+    private readonly ObservableCollection<double> _cpuValues = [];
+    private readonly ObservableCollection<double> _ramValues = [];
 
     public ISeries[] Series { get; }
-    public Axis[] XAxes { get; } = { new Axis { IsVisible = false } };
+    public Axis[] XAxes { get; }
     public Axis[] YAxes { get; }
 
     public HistoryChartViewModel()
     {
-        var muted = new SKColor(0x8A, 0x93, 0xA6);
-        var border = new SKColor(0x2A, 0x2F, 0x3A);
-        var accent = new SKColor(0x4F, 0x8C, 0xFF);
-        var accentAlt = new SKColor(0x7C, 0x5C, 0xFF);
+        // Match Themes/DarkTheme.xaml: muted text, hairline border, amber accent, and a desaturated teal as the secondary line
+        var muted = new SKColor(0x5E, 0x65, 0x73);
+        // Separator color sits just barely above the background
+        var separator = new SKColor(0x16, 0x19, 0x1F);
+        var accent = new SKColor(0xFF, 0xB0, 0x00);
+        var accentAlt = new SKColor(0x5A, 0x9F, 0xB5);
 
-        YAxes = new[]
-        {
+        XAxes =
+        [
+            new Axis
+            {
+                IsVisible = false,
+                SeparatorsPaint = null
+            }
+        ];
+
+        YAxes =
+        [
             new Axis
             {
                 MinLimit = 0,
                 MaxLimit = 100,
+                // Step the grid every 25% (0/25/50/75/100) instead of the auto-derived 20% spacing so there are fewer lines.
+                MinStep = 25,
+                ForceStepToMin = true,
                 Labeler = v => $"{v:F0}%",
-                LabelsPaint = new SolidColorPaint(muted),
-                SeparatorsPaint = new SolidColorPaint(border) { StrokeThickness = 1 }
+                LabelsPaint = new SolidColorPaint(muted) { SKTypeface = SKTypeface.FromFamilyName("Cascadia Mono") },
+                TextSize = 10,
+                SeparatorsPaint = new SolidColorPaint(separator) { StrokeThickness = 1 }
             }
-        };
+        ];
 
-        Series = new ISeries[]
-        {
+        Series =
+        [
             new LineSeries<double>
             {
                 Name = "CPU",
                 Values = _cpuValues,
                 GeometrySize = 0,
-                Stroke = new SolidColorPaint(accent) { StrokeThickness = 2 },
-                Fill = new SolidColorPaint(accent.WithAlpha(40))
+                Stroke = new SolidColorPaint(accent) { StrokeThickness = 1.5f },
+                Fill = new SolidColorPaint(accent.WithAlpha(20))
             },
             new LineSeries<double>
             {
-                Name = "RAM",
+                Name = "MEM",
                 Values = _ramValues,
                 GeometrySize = 0,
-                Stroke = new SolidColorPaint(accentAlt) { StrokeThickness = 2 },
-                Fill = new SolidColorPaint(accentAlt.WithAlpha(40))
+                Stroke = new SolidColorPaint(accentAlt) { StrokeThickness = 1.5f },
+                Fill = new SolidColorPaint(accentAlt.WithAlpha(20))
             }
-        };
+        ];
     }
 
     public void Push(double cpuPercent, double ramPercent)

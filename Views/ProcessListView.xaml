@@ -6,23 +6,37 @@
              xmlns:vm="clr-namespace:System_Resource_Monitor.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:ProcessListViewModel}">
-    <Border Style="{StaticResource Card}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid Margin="20,14,20,14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Style="{StaticResource HeadingText}" Text="Processes"/>
+        <TextBlock Style="{StaticResource SectionLabel}"
+                   Margin="0,0,0,10"
+                   Text="PROCESSES  ·  SORTED BY CPU"/>
 
-            <DataGrid Grid.Row="1" ItemsSource="{Binding ItemsView}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="60"/>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
-                    <DataGridTextColumn Header="CPU %" Binding="{Binding CpuPercent, StringFormat={}{0:F1}}" Width="80"/>
-                    <DataGridTextColumn Header="RAM MB" Binding="{Binding MemoryMb,   StringFormat={}{0:F1}}" Width="100"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-    </Border>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding ItemsView}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="PID"
+                                    Binding="{Binding Pid}"
+                                    Width="60"
+                                    ElementStyle="{StaticResource NumericCell}"
+                                    HeaderStyle="{StaticResource NumericColumnHeader}"/>
+                <DataGridTextColumn Header="NAME"
+                                    Binding="{Binding Name}"
+                                    Width="*"/>
+                <DataGridTextColumn Header="CPU %"
+                                    Binding="{Binding CpuPercent, StringFormat={}{0:F1}}"
+                                    Width="70"
+                                    ElementStyle="{StaticResource NumericCell}"
+                                    HeaderStyle="{StaticResource NumericColumnHeader}"/>
+                <DataGridTextColumn Header="RAM MB"
+                                    Binding="{Binding MemoryMb, StringFormat={}{0:F1}}"
+                                    Width="90"
+                                    ElementStyle="{StaticResource NumericCell}"
+                                    HeaderStyle="{StaticResource NumericColumnHeader}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
 </UserControl>

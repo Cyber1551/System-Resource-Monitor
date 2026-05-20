@@ -7,21 +7,38 @@
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:HistoryChartViewModel}">
-    <Border Style="{StaticResource Card}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid Margin="20,14,20,14">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Style="{StaticResource HeadingText}" Text="History (last 60s)"/>
+        <!-- Header: section label on the left, inline color-keyed legend on the right. -->
+        <Grid Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <lvc:CartesianChart Grid.Row="1"
-                                Series="{Binding Series}"
-                                XAxes="{Binding XAxes}"
-                                YAxes="{Binding YAxes}"
-                                LegendPosition="Top"
-                                MinHeight="200"/>
+            <TextBlock Style="{StaticResource SectionLabel}"
+                       VerticalAlignment="Center"
+                       Text="UTILIZATION HISTORY  ·  LAST 60S"/>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Rectangle Width="10" Height="2" Fill="{StaticResource AccentBrush}"
+                           VerticalAlignment="Center"/>
+                <TextBlock Style="{StaticResource SectionLabel}" Margin="6,0,16,0" Text="CPU"/>
+                <Rectangle Width="10" Height="2" Fill="#5A9FB5" VerticalAlignment="Center"/>
+                <TextBlock Style="{StaticResource SectionLabel}" Margin="6,0,0,0" Text="MEMORY"/>
+            </StackPanel>
         </Grid>
-    </Border>
+
+        <lvc:CartesianChart Grid.Row="1"
+                            Background="{StaticResource BgBrush}"
+                            Series="{Binding Series}"
+                            XAxes="{Binding XAxes}"
+                            YAxes="{Binding YAxes}"
+                            LegendPosition="Hidden"
+                            MinHeight="200"/>
+    </Grid>
 </UserControl>

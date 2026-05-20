@@ -35,6 +35,10 @@ public sealed partial class CoreUsage : ObservableObject
     [ObservableProperty]
     private int _index;
 
+    // IsHigh is recomputed every time Percent changes so the per-core bar can swap its brush to WarnBrush via a XAML DataTrigger without a converter.
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsHigh))]
     private double _percent;
+
+    public bool IsHigh => Percent > 80;
 }

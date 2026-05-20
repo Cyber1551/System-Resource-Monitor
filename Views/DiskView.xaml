@@ -6,28 +6,26 @@
              xmlns:vm="clr-namespace:System_Resource_Monitor.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:DiskViewModel}">
-    <Border Style="{StaticResource Card}">
-        <StackPanel>
-            <TextBlock Style="{StaticResource HeadingText}" Text="Disk"/>
+    <Border Style="{StaticResource KpiTileLast}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Style="{StaticResource SectionLabel}" Text="DISK READ"/>
+                <TextBlock Style="{StaticResource KpiNumber}" Margin="0,2,0,0"
+                           Text="{Binding ReadMBs, StringFormat={}{0:F1}}"/>
+                <TextBlock Style="{StaticResource KpiSubtext}" Margin="0,2,0,0" Text="MB/S"/>
+            </StackPanel>
 
-                <StackPanel>
-                    <TextBlock Style="{StaticResource MutedText}" Text="Read"/>
-                    <TextBlock FontSize="20" FontWeight="SemiBold"
-                               Text="{Binding ReadMBs, StringFormat={}{0:F2} MB/s}"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Style="{StaticResource MutedText}" Text="Write"/>
-                    <TextBlock FontSize="20" FontWeight="SemiBold"
-                               Text="{Binding WriteMBs, StringFormat={}{0:F2} MB/s}"/>
-                </StackPanel>
-            </Grid>
-        </StackPanel>
+            <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                <TextBlock Style="{StaticResource SectionLabel}" Text="DISK WRITE"/>
+                <TextBlock Style="{StaticResource KpiNumber}" Margin="0,2,0,0"
+                           Text="{Binding WriteMBs, StringFormat={}{0:F1}}"/>
+                <TextBlock Style="{StaticResource KpiSubtext}" Margin="0,2,0,0" Text="MB/S"/>
+            </StackPanel>
+        </Grid>
     </Border>
 </UserControl>

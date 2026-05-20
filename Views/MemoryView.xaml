@@ -6,42 +6,19 @@
              xmlns:vm="clr-namespace:System_Resource_Monitor.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:MemoryViewModel}">
-    <Border Style="{StaticResource Card}">
+    <Border Style="{StaticResource KpiTile}">
         <StackPanel>
-            <TextBlock Style="{StaticResource HeadingText}" Text="Memory"/>
-
-            <Grid Margin="0,0,0,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <ProgressBar Value="{Binding UsedPercent}" Maximum="100"/>
-                <TextBlock Grid.Column="1" Margin="12,0,0,0"
-                           Text="{Binding UsedPercent, StringFormat={}{0:F1}%}"/>
-            </Grid>
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel>
-                    <TextBlock Style="{StaticResource MutedText}" Text="Used"/>
-                    <TextBlock Text="{Binding UsedGb, StringFormat={}{0:F2} GB}"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Style="{StaticResource MutedText}" Text="Available"/>
-                    <TextBlock Text="{Binding AvailableGb, StringFormat={}{0:F2} GB}"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="2">
-                    <TextBlock Style="{StaticResource MutedText}" Text="Total"/>
-                    <TextBlock Text="{Binding TotalGb, StringFormat={}{0:F2} GB}"/>
-                </StackPanel>
-            </Grid>
+            <TextBlock Style="{StaticResource SectionLabel}" Text="MEMORY"/>
+            <TextBlock Style="{StaticResource KpiNumber}" Margin="0,2,0,0"
+                       Text="{Binding UsedPercent, StringFormat={}{0:F1}%}"/>
+            <TextBlock Style="{StaticResource KpiSubtext}" Margin="0,2,0,0">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="{}{0:F1} / {1:F1} GB">
+                        <Binding Path="UsedGb"/>
+                        <Binding Path="TotalGb"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
         </StackPanel>
     </Border>
 </UserControl>

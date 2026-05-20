@@ -6,46 +6,71 @@
              xmlns:vm="clr-namespace:System_Resource_Monitor.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=vm:CpuViewModel}">
-    <Border Style="{StaticResource Card}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+    <Grid Margin="20,14,20,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Style="{StaticResource HeadingText}" Text="CPU"/>
+        <TextBlock Style="{StaticResource SectionLabel}"
+                   Margin="0,0,0,10"
+                   Text="PER-CORE UTILIZATION"/>
 
-            <Grid Grid.Row="1" Margin="0,0,0,12">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <ProgressBar Value="{Binding TotalPercent}" Maximum="100"/>
-                <TextBlock Grid.Column="1" Margin="12,0,0,0"
-                           Text="{Binding TotalPercent, StringFormat={}{0:F1}%}"/>
-            </Grid>
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Cores}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="6"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:CoreUsage}">
+                    <Grid Margin="0,4,18,4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-            <ItemsControl Grid.Row="2" ItemsSource="{Binding Cores}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="4"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type vm:CoreUsage}">
-                        <StackPanel Margin="4">
-                            <Grid>
-                                <TextBlock Style="{StaticResource MutedText}"
-                                           Text="{Binding Index, StringFormat='Core {0}'}"/>
-                                <TextBlock HorizontalAlignment="Right" FontSize="11"
-                                           Text="{Binding Percent, StringFormat={}{0:F0}%}"/>
-                            </Grid>
-                            <ProgressBar Value="{Binding Percent}" Maximum="100" Margin="0,2,0,0"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
-    </Border>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource SectionLabel}"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Index, StringFormat='C{0:D2}'}"/>
+                            <TextBlock Grid.Column="1"
+                                       FontFamily="{StaticResource MonoFontFamily}"
+                                       FontSize="12"
+                                       Typography.NumeralAlignment="Tabular"
+                                       Text="{Binding Percent, StringFormat={}{0:F0}%}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsHigh}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource WarnBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+
+                        <ProgressBar Grid.Row="1" Value="{Binding Percent}" Maximum="100"
+                                     Margin="0,5,0,0">
+                            <ProgressBar.Style>
+                                <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsHigh}" Value="True">
+                                            <Setter Property="Foreground" Value="{StaticResource WarnBrush}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ProgressBar.Style>
+                        </ProgressBar>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
 </UserControl>
