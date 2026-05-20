@@ -1,6 +1,6 @@
 # System Resource Monitor
 
-A Windows desktop dashboard for live CPU, memory, disk, and process metrics, built in WPF on .NET 9 using MVVM.
+A Windows desktop dashboard for live CPU, memory, disk, and process metrics, built in WPF on .NET 9 using MVVM (Model-View-ViewModel) and Dependency Injection.
 
 ![screenshot](img/app.png)
 
@@ -15,7 +15,8 @@ A Windows desktop dashboard for live CPU, memory, disk, and process metrics, bui
 
 ## Architecture
 
-The app is a single window composed of feature views that each bind to their own ViewModel. A `ShellViewModel` aggregates the feature ViewModels, owns the sampling loop, and is the only `DataContext` `MainWindow` ever sees.
+The app is a single window composed of feature views that each bind to their own ViewModel.<br />
+A `ShellViewModel` aggregates the feature ViewModels (Process List, CPU %, Memory %, etc), owns the sampling loop, and is the only `DataContext` `MainWindow` ever sees.
 
 Each one-second tick crosses a thread boundary: sampling runs on the thread pool, results are applied to the bound ViewModels on the UI thread, and XAML data binding takes care of the redraw.
 
